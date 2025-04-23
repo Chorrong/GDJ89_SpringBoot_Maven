@@ -29,7 +29,7 @@
 						<form method="post" enctype="multipart/form-data">
 						  <div class="form-group">
 						    <label for="user">User</label>
-						    <input type="text" name="userName" class="form-control" id="user" >
+						    <input type="text" name="userName" value="" class="form-control" id="user" >
 						  </div>
 						  <div class="form-group">
 						    <label for="title">Title</label>
