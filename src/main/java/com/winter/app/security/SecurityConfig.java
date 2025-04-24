@@ -96,8 +96,8 @@ public class SecurityConfig {
 						
 						.invalidSessionUrl("/")
 						.maximumSessions(1)
-						.maxSessionsPreventsLogin(false)
 						.expiredUrl("/user/login")
+						.maxSessionsPreventsLogin(false)
 						;
 						
 					})
