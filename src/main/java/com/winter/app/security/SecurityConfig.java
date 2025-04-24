@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.winter.app.user.UserService;
+import com.winter.app.user.UserSocialService;
 
 @Configuration
 @EnableWebSecurity//(debug = true)
@@ -20,6 +21,8 @@ public class SecurityConfig {
 	private SecurityLoginFailHandler loginFailHandler;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private UserSocialService userSocialService;
 	
 	
 	//정적자원들을 Security에서 제외
@@ -100,6 +103,12 @@ public class SecurityConfig {
 						.maxSessionsPreventsLogin(false)
 						;
 						
+					})
+					.oauth2Login(oauth2Login->{
+						oauth2Login
+						.userInfoEndpoint(use->{
+							use.userService(userSocialService);
+						});
 					})
 					
 					
