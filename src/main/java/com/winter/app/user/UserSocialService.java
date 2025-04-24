@@ -36,6 +36,11 @@ public class UserSocialService extends DefaultOAuth2UserService {
 	}
 	
 	private OAuth2User useKakao(OAuth2UserRequest userRequest) {
+		
+		//ID 로 DB에서 조회 
+		//데이터가 없다면 DB에 INSERT
+		//아니면 조회한데이터로 작성
+		
 		OAuth2User user = super.loadUser(userRequest);
 		log.info("User : {} ", user);
 		log.info("ID : {} ", user.getName());
