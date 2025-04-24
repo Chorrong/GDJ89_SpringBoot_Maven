@@ -1,5 +1,6 @@
 package com.winter.app.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -10,6 +11,9 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity//(debug = true)
 public class SecurityConfig {
+	
+	@Autowired
+	private SecurityLoginSuccessHandler loginSuccessHandler;
 	
 	
 	//정적자원들을 Security에서 제외
@@ -55,7 +59,8 @@ public class SecurityConfig {
 						//username, password
 						//.usernameParameter("id")
 						//.passwordParameter("pw")
-						.defaultSuccessUrl("/")
+						//.defaultSuccessUrl("/")
+						.successHandler(loginSuccessHandler)
 						.failureUrl("/user/login")
 						.permitAll()
 						;
