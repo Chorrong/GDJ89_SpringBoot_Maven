@@ -8,12 +8,18 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.winter.app.user.UserService;
+
 @Configuration
 @EnableWebSecurity//(debug = true)
 public class SecurityConfig {
 	
 	@Autowired
 	private SecurityLoginSuccessHandler loginSuccessHandler;
+	@Autowired
+	private SecurityLoginFailHandler loginFailHandler;
+	@Autowired
+	private UserService userService;
 	
 	
 	//정적자원들을 Security에서 제외
@@ -61,7 +67,8 @@ public class SecurityConfig {
 						//.passwordParameter("pw")
 						//.defaultSuccessUrl("/")
 						.successHandler(loginSuccessHandler)
-						.failureUrl("/user/login")
+						//.failureUrl("/user/login")
+						.failureHandler(loginFailHandler)
 						.permitAll()
 						;
 					})
@@ -74,6 +81,27 @@ public class SecurityConfig {
 						.permitAll()
 						;
 					})
+					.rememberMe(rememberme->{
+						rememberme
+						.rememberMeParameter("remember-me")
+						.tokenValiditySeconds(60)
+						.key("rememberkey")
+						.userDetailsService(userService)
+						.authenticationSuccessHandler(loginSuccessHandler)
+						.useSecureCookie(false);
+					})
+					.sessionManagement(s->{
+						s
+						.sessionFixation().newSession()//.changeSessionId()
+						
+						.invalidSessionUrl("/")
+						.maximumSessions(1)
+						.maxSessionsPreventsLogin(false)
+						.expiredUrl("/user/login")
+						;
+						
+					})
+					
 					
 					;
 		

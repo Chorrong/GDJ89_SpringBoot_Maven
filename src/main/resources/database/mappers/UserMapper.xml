@@ -35,6 +35,11 @@
   		<result column="BIRTH" property="birth"/>
   		<result column="FILE_NAME" property="fileName"/>
   		<result column="ORI_NAME" property="oriName"/>
+
+		<result column="AccountNonExpired" property="accountNonExpired"/>
+		<result column="AccountNonLocked" property="accountNonLocked"/>
+		<result column="CredentialsNonExpired" property="credentialsNonExpired"/>
+		<result column="Enabled" property="enabled"/>
   		<collection property="list" javaType="java.util.List" ofType="RoleVO">
   			<result column="ROLE_NAME" property="roleName"/>
   		</collection>
