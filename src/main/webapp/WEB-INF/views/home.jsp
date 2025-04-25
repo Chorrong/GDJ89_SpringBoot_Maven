@@ -19,6 +19,8 @@
 			<div id="content">
 				<c:import url="./templates/topbar.jsp"></c:import>
 				<div class="container-fluid">
+					<a href="/user/logout">logout</a>
+				
 					<sec:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
 						<h3>Admin View</h3>
 					</sec:authorize>
