@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.winter.app.user.UserVO;
 
@@ -22,6 +23,14 @@ public class ChatController {
 		List<UserVO> list = chatService.getList();
 		model.addAttribute("list", list);
 		return "chat/list";
+	}
+	
+	@GetMapping("room")
+	@ResponseBody
+	public List<MessageVO> room(MessageVO messageVO)throws Exception{
+		List<MessageVO> list = chatService.room(messageVO);
+		
+		return list;
 	}
 
 }

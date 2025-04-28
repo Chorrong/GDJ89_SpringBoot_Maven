@@ -11,7 +11,8 @@ import lombok.ToString;
 @Getter
 @ToString
 public class MessageVO {
-	
+	private Long chatNum;
+	private Long roomNum;
 	private String sender;
 	private String body;
 	private String receiver;

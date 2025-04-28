@@ -5,8 +5,24 @@
   
   <mapper namespace="com.winter.app.websocket.ChatDAO">
   
+  	<select id="room" parameterType="MessageVO" resultType="MessageVO">
+  		SELECT * FROM CHAT_TBL
+  		WHERE 
+  			SENDER=#{sender} AND RECEIVER=#{receiver}
+  			OR
+  			SENDER=#{receiver} AND RECEIVER=#{sender}
+  		ORDER BY CHAT_TIME ASC
+  			
+  		
+  	</select>
+  
   	<select id="getList" resultType="UserVO">
   		SELECT USERNAME, NAME, FILE_NAME, STATUS FROM USER_TBL
   	</select>
+  	
+  	<insert id="makeRoom" parameterType="MessageVO">
+  		INSERT INTO CHAT_TBL
+  		VALUES (null, #{roomNum}, #{sender}, #{receiver}, null, now())
+  	</insert>
   	
   </mapper>
