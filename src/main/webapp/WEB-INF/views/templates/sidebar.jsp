@@ -90,7 +90,7 @@
 	</li>
 
 	<!-- Nav Item - Charts -->
-	<li class="nav-item"><a class="nav-link" href="/chat"> <i
+	<li class="nav-item"><a class="nav-link" href="/chat/list"> <i
 			class="fas fa-fw fa-chart-area"></i> <span>Chat</span></a></li>
 
 	<!-- Nav Item - Tables -->

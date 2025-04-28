@@ -8,10 +8,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 //XML
 @Configuration
 public class FileConfig implements WebMvcConfigurer {
-	@Value("${app.files.base}")
+	@Value("${app.files.base}") //D://upload/
 	private String path;
 	
-	@Value("${app.files.url}")
+	@Value("${app.files.url}") // /files/
 	private String url;
 	
 	//<resources mapping="/resources/**" location="/resources/" />

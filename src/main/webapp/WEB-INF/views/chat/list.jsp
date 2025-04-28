@@ -18,11 +18,35 @@
 				<div class="container-fluid">
 					
 					<h1>Chat List</h1>
-					<!-- contents 내용 -->
-					<div>
-						<input type="text" id="message">
-						<button id="send">SEND</button>
-					</div>
+							<div class="table-responsive">
+								<table class="table table-bordered" id="dataTable" width="100%"
+									cellspacing="0">
+									<tbody>
+										<c:forEach items="${list}" var="vo">
+											<tr>
+												<td>${vo.username}</td>
+												<td>${vo.name}</td>
+												<td>
+													<div class="dropdown-list-image mr-3">
+														<img width="30" height="30" class="rounded-circle" src="/files/user/${vo.fileName}"
+															alt="...">
+														<div class="status-indicator bg-warning"></div>
+													</div>
+												</td>
+												<td>
+													<div style="width:15px; height:15px">
+														<span class="btn ${vo.status?'btn-primary':'btn-danger'} btn-circle"></span>
+													</div>
+												</td>
+												
+											</tr>
+										</c:forEach>
+
+									</tbody>
+								</table>
+							</div>					
+					
+					
 					
 					
 				</div>
@@ -36,7 +60,7 @@
 
 	
 	<c:import url="/WEB-INF/views/templates/footer.jsp"></c:import>
-	<script type="text/javascript">
+<!-- 	<script type="text/javascript">
 		const websocket = new WebSocket("/ws/chat")
 		const send = document.getElementById("send")
 		const message = document.getElementById("message")
@@ -87,7 +111,7 @@
 		
 		
 	
-	</script>
+	</script> -->
 	
 	
 </body>
