@@ -36,7 +36,9 @@ public class ChatHandler implements WebSocketHandler{
 	
 	
 	//대화방의 대화 내용을 임시 저장(DB에 저장)
+	//현재 사용 X
 	private Map<Long, List<MessageVO>> messages = new HashMap<>();
+	
 	
 
 	@Override
@@ -73,24 +75,28 @@ public class ChatHandler implements WebSocketHandler{
 		
 
 		
-		if(!messages.containsKey(messageVO.getRoomNum())) {
-			List<MessageVO> list = new ArrayList<>();
-			list.add(messageVO);
-			messages.put(messageVO.getRoomNum(), list);
-		}else {
-			messages.get(messageVO.getRoomNum()).add(messageVO);
+//		if(!messages.containsKey(messageVO.getRoomNum())) {
+//			List<MessageVO> list = new ArrayList<>();
+//			list.add(messageVO);
+//			messages.put(messageVO.getRoomNum(), list);
+//		}else {
+//			messages.get(messageVO.getRoomNum()).add(messageVO);
+//		}
+		
+		chatDAO.addChat(messageVO);
+		
+		try {
+			users.get(messageVO.getReceiver()).sendMessage(message);
+		}catch (Exception e) {
+			e.printStackTrace();
 		}
-		
-		
-		
-		users.get(messageVO.getReceiver()).sendMessage(message);
 		users.get(messageVO.getSender()).sendMessage(message);
 		
-		if(messages.get(messageVO.getRoomNum()).size()>2) {
-			List<MessageVO> copy = messages.get(messageVO.getRoomNum());
-			messages.put(messageVO.getRoomNum(), new ArrayList<>());
-			int result = chatDAO.add(copy);
-		}
+//		if(messages.get(messageVO.getRoomNum()).size()>2) {
+//			List<MessageVO> copy = messages.get(messageVO.getRoomNum());
+//			messages.put(messageVO.getRoomNum(), new ArrayList<>());
+//			int result = chatDAO.add(copy);
+//		}
 		
 		
 		

@@ -9,11 +9,16 @@ import org.springframework.stereotype.Service;
 import com.winter.app.user.UserDAO;
 import com.winter.app.user.UserVO;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class ChatService {
 	
 	@Autowired
 	private ChatDAO chatDAO;
+	
+
 	
 	public List<UserVO> getList()throws Exception{
 		List<UserVO> list = chatDAO.getList();
@@ -29,6 +34,8 @@ public class ChatService {
 	
 	public List<MessageVO> room(MessageVO messageVO)throws Exception{
 		List<MessageVO> list = chatDAO.room(messageVO);
+		
+		
 		if(list.size()==0) {
 			Calendar calendar = Calendar.getInstance();
 			messageVO.setRoomNum(calendar.getTimeInMillis());

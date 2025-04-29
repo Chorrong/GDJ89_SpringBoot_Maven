@@ -54,8 +54,24 @@ websocket.onopen=()=>{
 
 //websocket으로 메세지를 수신 했을 때
 websocket.onmessage=(m)=>{
-    //
     let result =JSON.parse(m.data)
+    let start = result.sender;//송신자    user2
+    let end = result.receiver;//수신자자  admin
+
+    let my = chat.getAttribute("data-sender-name")//내정 user2
+    let re = rec.value; //현재 채팅하고 있는 상대방 정보 admin
+
+    console.log("start : ", start)
+    console.log("my : ", my)
+    console.log("re : ", re)
+
+
+    if(start != my && start != re ){
+        console.log("!!!!!!!!!!!!!!")
+        return;
+    }
+
+    
     let r = makeData(result);
     chatBody.append(r)
 }
@@ -70,6 +86,7 @@ send.addEventListener("click", ()=>{
     let m = message.value
 
     let mes = new Message();
+    mes.sender=chat.getAttribute("data-sender-name")
     mes.roomNum="0";
     mes.body=m;
     mes.receiver=rec.value;
