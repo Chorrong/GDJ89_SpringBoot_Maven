@@ -70,7 +70,7 @@ send.addEventListener("click", ()=>{
     let m = message.value
 
     let mes = new Message();
-    mes.roomNum=
+    mes.roomNum="0";
     mes.body=m;
     mes.receiver=rec.value;
     mes.date=new Date();
