@@ -44,6 +44,9 @@ public class ChatHandler implements WebSocketHandler{
 		log.info("{}", (UserVO)(((Authentication)session.getPrincipal()).getPrincipal()));
 		//UserVO userVO = (UserVO)session.getPrincipal().;
 		users.put(session.getPrincipal().getName(), session);
+		
+		log.info("map {}", users);
+		
 	}
 
 	@Override
@@ -54,6 +57,8 @@ public class ChatHandler implements WebSocketHandler{
 		ObjectMapper objectMapper = new ObjectMapper();
 		MessageVO messageVO = objectMapper.readValue(message.getPayload().toString(), MessageVO.class);
 		
+		messageVO.setSender(session.getPrincipal().getName());
+		
 		if(!messages.containsKey(messageVO.getRoomNum())) {
 			StringBuffer sb = new StringBuffer();
 			sb.append(message.getPayload());
@@ -61,6 +66,7 @@ public class ChatHandler implements WebSocketHandler{
 		}else {
 			messages.get(messageVO.getRoomNum()).append(message.getPayload());
 		}
+		
 		
 		
 		users.get(messageVO.getReceiver()).sendMessage(message);
@@ -83,6 +89,8 @@ public class ChatHandler implements WebSocketHandler{
 		// TODO Auto-generated method stub
 		// Websocket 연결이 종료 되었을 때
 		list.remove(session);
+		users.remove(session.getPrincipal().getName());
+		
 	}
 
 	@Override
