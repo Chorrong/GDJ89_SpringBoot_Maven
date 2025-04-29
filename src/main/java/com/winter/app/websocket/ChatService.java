@@ -32,7 +32,8 @@ public class ChatService {
 		if(list.size()==0) {
 			Calendar calendar = Calendar.getInstance();
 			messageVO.setRoomNum(calendar.getTimeInMillis());
-			chatDAO.makeRoom(messageVO);
+			chatDAO.addChat(messageVO);
+			list = chatDAO.room(messageVO);
 		}
 		return list; 
 	}

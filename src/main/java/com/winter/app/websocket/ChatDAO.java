@@ -13,6 +13,8 @@ public interface ChatDAO {
 	
 	public List<MessageVO> room(MessageVO messageVO)throws Exception;
 	
-	public int makeRoom(MessageVO messageVO)throws Exception;
+	public int addChat(MessageVO messageVO)throws Exception;
+	
+	public int add(List<MessageVO> list)throws Exception;
 
 }

@@ -1,9 +1,19 @@
 
-const send = document.getElementById("send")
+//Modal창에 메세지 전송 버튼
+const send = document.getElementById("send") 
+//Modal창에 메세지 입력 태그
 const message = document.getElementById("message")
+
+//Table에 회원목록에서 가져오는 수신자 정보
 const receivername = document.getElementsByClassName("receiver-name");
+
+//Modal에 hidden에 들어갈 특정 수신자 정보
 const rec = document.getElementById("receiver")
+
+//Modal창의 메세지들을 출력하는곳곳
 const chatBody = document.getElementById("chat-body");
+
+//현재 로그인한 사용자 유저네임(sender)
 const chat = document.getElementById("chat")
 
 for(let r of receivername){
@@ -13,6 +23,7 @@ for(let r of receivername){
         rec.value=receiver;
         chatBody.innerHTML="";
 
+        //이전 대화 내용을 DB에서 조회 하고 DB에 데이터가 없으면 방을 새로 INSERT하고 오자자
         fetch(`/chat/room?receiver=${receiver}&sender=${sender}`)
             .then(r=>r.json())
             .then(r=>{
@@ -59,6 +70,7 @@ send.addEventListener("click", ()=>{
     let m = message.value
 
     let mes = new Message();
+    mes.roomNum=
     mes.body=m;
     mes.receiver=rec.value;
     mes.date=new Date();
@@ -84,14 +96,15 @@ function webSocketError(){
 
 //------------------------------------
 class Message {
+    roomNum="";
     sender="";
     body="";
     receiver="";
     date="";
-    status="0"  //0전체 1:1:1
+    status="0"  //0->전체 1->1:1
 }
 
-
+//chatBody(메세지를 출력)에 출력할 엘리먼트 구조 생성성
 function makeData(data){
 
     const div = document.createElement("div");

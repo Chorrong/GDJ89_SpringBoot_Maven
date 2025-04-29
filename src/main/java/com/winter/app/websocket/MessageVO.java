@@ -17,6 +17,8 @@ public class MessageVO {
 	private String body;
 	private String receiver;
 	private String date;
+	
+	//0->전체, 1->1:1
 	private String status;
 
 }

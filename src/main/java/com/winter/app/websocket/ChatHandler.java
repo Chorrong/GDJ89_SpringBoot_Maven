@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
@@ -22,30 +23,36 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 public class ChatHandler implements WebSocketHandler{
+	@Autowired
+	private ChatDAO chatDAO;
 	
 	//socket으로 연결된 전체 유저
 	//BroadCast
 	private List<WebSocketSession> list = new ArrayList<>();
 	
+	//socket으로 연결된 전체 유저
+	//key : username, value:WebSocketSession
 	private Map<String, WebSocketSession> users = new HashMap<>();
 	
-	private Map<Long, StringBuffer> messages = new HashMap<>();
+	
+	//대화방의 대화 내용을 임시 저장(DB에 저장)
+	private Map<Long, List<MessageVO>> messages = new HashMap<>();
 	
 
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		// TODO Auto-generated method stub
 		//Client가 WebSocket 연결시 실행
-		log.info("session : {}", session);
-		//log.info("p: {}", session.getPrincipal()); 
-		list.add(session);
 		
-		log.info("{}", session.getPrincipal().getName());
-		log.info("{}", (UserVO)(((Authentication)session.getPrincipal()).getPrincipal()));
-		//UserVO userVO = (UserVO)session.getPrincipal().;
+		 
+		list.add(session);
 		users.put(session.getPrincipal().getName(), session);
 		
-		log.info("map {}", users);
+		log.info("{}", session.getPrincipal().getName());
+		log.info("{}", (UserVO)((Authentication)session.getPrincipal()).getPrincipal());
+		//UserVO userVO = (UserVO)session.getPrincipal().;
+		
+		
 		
 	}
 
@@ -59,12 +66,19 @@ public class ChatHandler implements WebSocketHandler{
 		
 		messageVO.setSender(session.getPrincipal().getName());
 		
+		//1:1 통신시 DB에서 ROOM정보를 조회		
+		List<MessageVO> rooms = chatDAO.room(messageVO);
+		
+		messageVO.setRoomNum(rooms.get(0).getRoomNum());
+		
+
+		
 		if(!messages.containsKey(messageVO.getRoomNum())) {
-			StringBuffer sb = new StringBuffer();
-			sb.append(message.getPayload());
-			messages.put(messageVO.getRoomNum(), sb);
+			List<MessageVO> list = new ArrayList<>();
+			list.add(messageVO);
+			messages.put(messageVO.getRoomNum(), list);
 		}else {
-			messages.get(messageVO.getRoomNum()).append(message.getPayload());
+			messages.get(messageVO.getRoomNum()).add(messageVO);
 		}
 		
 		
@@ -72,7 +86,11 @@ public class ChatHandler implements WebSocketHandler{
 		users.get(messageVO.getReceiver()).sendMessage(message);
 		users.get(messageVO.getSender()).sendMessage(message);
 		
-		
+		if(messages.get(messageVO.getRoomNum()).size()>2) {
+			List<MessageVO> copy = messages.get(messageVO.getRoomNum());
+			messages.put(messageVO.getRoomNum(), new ArrayList<>());
+			int result = chatDAO.add(copy);
+		}
 		
 		
 		
