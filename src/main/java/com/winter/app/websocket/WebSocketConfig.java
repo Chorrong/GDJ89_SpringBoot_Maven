@@ -17,7 +17,11 @@ public class WebSocketConfig implements WebSocketConfigurer {
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 		// TODO Auto-generated method stub
 		System.out.println("========= CHat Handler ========");
-		registry.addHandler(chatHandler, "/ws/chat").setAllowedOrigins("*");
+		registry
+		.addHandler(chatHandler, "/ws/chat")
+		//.withSockJS()
+		.setAllowedOrigins("*");
+		
 	}
 
 }
