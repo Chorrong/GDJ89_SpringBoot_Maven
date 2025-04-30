@@ -46,16 +46,12 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 		
 		if(accessToken.length()>0) {
 			try {
+				//Token 유효성 검증
 				Claims claims = jwtTokenManager.tokenValidation(accessToken);
 				
 				Authentication authentication = jwtTokenManager.getAuthentication(claims.getSubject());
 				SecurityContextHolder.getContext().setAuthentication(authentication);
-				
-				
-				
-				
-				
-				
+								
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
