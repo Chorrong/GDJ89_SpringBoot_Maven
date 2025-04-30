@@ -30,6 +30,19 @@ public class SecurityConfig {
 	
 	//정적자원들을 Security에서 제외
 	//anyRequest().permitAll() 권장
+	@Bean
+	WebSecurityCustomizer customizer() {
+			//WebSecurityCustomizer s = ()->{}
+			//return s;
+			return (web)->{
+				web.ignoring()
+				   .requestMatchers("/css/**")
+				   .requestMatchers("/images/**", "/img/**")
+				   .requestMatchers("/js/**")
+				   .requestMatchers("/vendor/**")
+				   ;
+			};
+		}
 	
 	
 	//인증과 권한의 관한 설정
