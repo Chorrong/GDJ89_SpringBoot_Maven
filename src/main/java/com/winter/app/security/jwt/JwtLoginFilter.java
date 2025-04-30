@@ -39,6 +39,8 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter{
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException {
 		
+		request.getMethod();//POST, GET
+		
 		log.info("Login 시도");
 	 	String username = request.getParameter("username");
 		String password = request.getParameter("password");

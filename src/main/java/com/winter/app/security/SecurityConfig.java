@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configurers.HttpBasicC
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.winter.app.security.jwt.JwtAuthenticationFilter;
 import com.winter.app.security.jwt.JwtLoginFilter;
 import com.winter.app.security.jwt.JwtTokenManager;
 import com.winter.app.user.UserService;
@@ -51,8 +52,6 @@ public class SecurityConfig {
 						
 					})
 					
-					/** Form 관련 설정**/
-					.formLogin(formlogin ->formlogin.disable())
 					
 					/** 
 					 * Session 인증 방식이 아닌  
@@ -64,6 +63,8 @@ public class SecurityConfig {
 						session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 					})
 					
+					/** Form 관련 설정**/
+					.formLogin(formlogin ->formlogin.disable())
 					/**
 					 * 쿠키와 세션을 이용하는 방식이 아니라 
 					 * Request Header에 ID, PW를 직접 보내는 방식이라 보안에 취약
@@ -72,6 +73,7 @@ public class SecurityConfig {
 					.httpBasic(httpBasic -> httpBasic.disable())
 				
 					.addFilter(new JwtLoginFilter(authenticationConfiguration.getAuthenticationManager(), jwtTokenManager))
+					.addFilter(new JwtAuthenticationFilter(authenticationConfiguration.getAuthenticationManager(), jwtTokenManager))
 					
 					
 					;
