@@ -37,10 +37,12 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 		
 		Cookie [] cookies = request.getCookies();
 		String accessToken="";
+		if(cookies != null) {
 		for(Cookie cookie: cookies) {
 			if(cookie.getName().equals("accessToken")) {
 				accessToken = cookie.getValue();
 			}
+		}
 		}
 		log.info("Access Token {}", accessToken);
 		
