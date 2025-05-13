@@ -1,5 +1,7 @@
 package com.winter.app.security;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,6 +9,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.winter.app.user.UserService;
 import com.winter.app.user.UserSocialService;
@@ -52,7 +57,7 @@ public class SecurityConfig {
 		
 		httpSecurity
 					/** CORS 허용, Filter에서 사용 가능*/
-					.cors(cors-> cors.disable())
+					.cors(cors-> cors.configurationSource(this.corsConfigurationSource()))
 					.csrf(csrf-> csrf.disable())
 					
 					/** 권한 적용 **/
@@ -126,7 +131,15 @@ public class SecurityConfig {
 	}
 	
 	
-	
+	CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration corsConfiguration = new CorsConfiguration();
+		
+		corsConfiguration.setAllowedOrigins(List.of("*"));
+		
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", corsConfiguration);
+		return source;
+	}
 	
 	
 
