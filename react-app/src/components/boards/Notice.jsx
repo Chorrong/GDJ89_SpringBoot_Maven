@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 function Notice(){
 
@@ -8,6 +8,10 @@ function Notice(){
     // const [변수명, set변수명]=useState(초기값)
     const [list, setList] = useState({pager:"", ar:[]});
     const [page, setPage] = useState(1);
+    const [search2, setSearch2] = useState("");
+    const [flag, setFlag] = useState(false)
+
+    const search = useRef("");
 
 
     //useEffect
@@ -18,6 +22,7 @@ function Notice(){
 
         let params = new URLSearchParams();
         params.append('page', page)
+        params.append('search', search2)
 
         fetch(`http://localhost:81/notice/list?${params}`)
         .then(r=>r.json())
@@ -25,7 +30,7 @@ function Notice(){
             console.log(r)
             setList(r)
         })
-    }, [page])
+    }, [flag])//[page, search2])
     
 
 
@@ -33,6 +38,7 @@ function Notice(){
         console.log(e.target.getAttribute("data-page-num"))
         let p =e.target.getAttribute("data-page-num")
         setPage(p)
+        setFlag(!flag)
 
     }
 
@@ -52,12 +58,19 @@ function Notice(){
         return p;
     }
 
+    function getSearch(){
+        console.log(search.current.value)
+        setSearch2(search.current.value);
+        setPage(1)
+        setFlag(!flag)
+    }
+
     return(
         <>
             <h1>Notice</h1>
 
             <div>
-                <input type="text" /><button>검색</button>
+                <input type="text" ref={search}/><button onClick={getSearch}>검색</button>
             </div>
            
             {
