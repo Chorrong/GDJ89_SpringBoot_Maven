@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react"
+import { Link } from "react-router-dom";
 
 function Notice(){
 
@@ -75,7 +76,7 @@ function Notice(){
            
             {
                 list.ar.map(l=>
-                    <li key={l.boardNum}>{l.boardTitle}</li>
+                    <li key={l.boardNum}><Link to="/notice/detail" state={{boardNum:l.boardNum}}>{l.boardTitle}</Link></li>
                 
                 )
 
