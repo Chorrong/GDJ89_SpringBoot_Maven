@@ -3,6 +3,7 @@ import Home from "../components/Home";
 import Notice from "../components/boards/Notice";
 import Qna from "../components/boards/Qna";
 import Detail from "../components/boards/Detail";
+import Add from "../components/boards/Add";
 
 export default function AppRouter(){
 
@@ -12,6 +13,7 @@ export default function AppRouter(){
             <Route path="/notice/">
                 <Route path="list" element={<Notice />}></Route>
                 <Route path="detail" element={<Detail />}></Route>
+                <Route path="add" element={<Add />}></Route>
             </Route>
             <Route path="/qna/list" element={<Qna />}></Route>
         </Routes>

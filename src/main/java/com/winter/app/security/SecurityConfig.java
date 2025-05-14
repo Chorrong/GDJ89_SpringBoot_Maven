@@ -63,9 +63,9 @@ public class SecurityConfig {
 					/** 권한 적용 **/
 					.authorizeHttpRequests(authorizeRequest->{
 						authorizeRequest
-						.requestMatchers("/notice/add", "/notice/update", "/notice/delete").hasRole("ADMIN")
-						.requestMatchers("/user/mypage","/user/update", "/user/logout").authenticated()
-						.requestMatchers("/manager/**").hasAnyRole("ADMIN", "MANAGER")
+						//.requestMatchers("/notice/add", "/notice/update", "/notice/delete").hasRole("ADMIN")
+						//.requestMatchers("/user/mypage","/user/update", "/user/logout").authenticated()
+						//.requestMatchers("/manager/**").hasAnyRole("ADMIN", "MANAGER")
 						.anyRequest().permitAll()
 						;
 						
@@ -134,7 +134,11 @@ public class SecurityConfig {
 	CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration corsConfiguration = new CorsConfiguration();
 		
+		//GET메서드 허용
 		corsConfiguration.setAllowedOrigins(List.of("*"));
+		
+		//추가 메서드 허용
+		corsConfiguration.setAllowedMethods(List.of("POST", "DELETE", "PATCH", "PUT", "GET"));
 		
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", corsConfiguration);

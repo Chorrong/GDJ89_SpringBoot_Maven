@@ -1,6 +1,6 @@
 //디테일 페이지
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation, useParams, useSearchParams } from "react-router-dom"
 
 export default function Detail(){
@@ -29,12 +29,25 @@ export default function Detail(){
     const p = useLocation();
     console.log(p.state.boardNum)
     const [num, setNum] = useState(p);
+    const [result, setResult] = useState({})
+
+    useEffect(()=>{
+        fetch(`http://localhost:81/notices/${p.state.boardNum}`)
+        .then(r=>r.json())
+        .then(r=>{
+            setResult(r)
+        })
 
 
+    }, [])
     
 
 
     return(
+        <>
         <h1>Detail</h1>
+        <h3>{result.boardTitle}</h3>
+        
+        </>
     )
 }

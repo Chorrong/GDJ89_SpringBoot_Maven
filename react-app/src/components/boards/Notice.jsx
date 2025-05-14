@@ -25,7 +25,7 @@ function Notice(){
         params.append('page', page)
         params.append('search', search2)
 
-        fetch(`http://localhost:81/notice/list?${params}`)
+        fetch(`http://localhost:81/notices?${params}`)
         .then(r=>r.json())
         .then(r=>{
             console.log(r)
@@ -88,7 +88,7 @@ function Notice(){
                 makeNum()
             }
             
-            
+            <Link to="/notice/add">글쓰기</Link>
 
 
         </>

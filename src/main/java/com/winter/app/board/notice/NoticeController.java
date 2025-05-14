@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,7 +26,7 @@ import com.winter.app.user.UserVO;
 import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
-@RequestMapping("/notice/*")
+//@RequestMapping("/notices/*")
 public class NoticeController {
 	
 	@Autowired
@@ -39,7 +40,8 @@ public class NoticeController {
 		return this.name;
 	}
 	
-	@GetMapping("list")
+	//@GetMapping("")
+	@GetMapping("/notices")
 	public Map<String, Object> getList(Pager pager, Model model)throws Exception{
 		pager.setKind("k1");
 		List<BoardVO> ar = noticeService.getList(pager);
@@ -54,34 +56,32 @@ public class NoticeController {
 		return map;
 	}
 	
-	@GetMapping("detail")
-	public String getDetail(BoardVO boardVO, Model model)throws Exception{
+	//@GetMapping("detail")
+	@GetMapping("/notices/{page}")
+	public BoardVO getDetail(@PathVariable(name = "page") Long page)throws Exception{
+		
+		BoardVO boardVO = new BoardVO();
+		boardVO.setBoardNum(page);
+		
 		boardVO = noticeService.getDetail(boardVO);
 		
-		if(boardVO == null) {
-			
-		}
-		
-		model.addAttribute("vo", boardVO);
-		
-		return "board/detail";
+		return boardVO;
 	}
 	
-	@GetMapping("add")
-	public String add()throws Exception{
-		return "board/add";
-	}
 	
-	@PostMapping("add")
-	public String add(NoticeVO noticeVO,@RequestParam(name = "attaches") MultipartFile[] attaches, @AuthenticationPrincipal UserVO userVO)throws Exception{
+	
+	@PostMapping("/notices")
+	public int add(NoticeVO noticeVO, @RequestParam(name = "attaches") MultipartFile[] attaches)throws Exception{
+
 		
-		noticeVO.setUserName(userVO.getUsername());
+		
+		//noticeVO.setUserName(userVO.getUsername());
 		
 		int result = noticeService.add(noticeVO, attaches);
 		
 	
 		
-		return "redirect:./list";
+		return result;
 	}
 	
 	@GetMapping("fileDown")
