@@ -1,9 +1,15 @@
 //작성자,제목, 내용, 첨부파일3개 고정
 
 import { useRef, useState } from "react"
+import { useNavigate } from "react-router-dom";
 
 
 export default function Add(){
+    console.log("aaaa")
+    const navigate = useNavigate();
+
+
+
     const username = useRef();
     const title = useRef();
     const contents = useRef();
@@ -18,14 +24,16 @@ export default function Add(){
 
     function changeInput(e){
        
-        setDatas((prevState)=>({
-            ...prevState, //전개
-            [e.target.name]:e.target.value
-        })
-        )
+        // setDatas((prevState)=>({
+        //     ...prevState, //전개
+        //     [e.target.name]:e.target.value
+        // })
+        // )
     }
 
     function add(e){
+        e.preventDefault();
+        console.log("add")
         let f = new FormData(e.target)
         fetch("http://localhost:81/notices", {
             method:"POST",
@@ -36,6 +44,7 @@ export default function Add(){
         }).then(r=>r.json())
         .then(r=>{
             console.log(r)
+            navigate("/notice/list")
         })
 
     }
@@ -67,7 +76,9 @@ export default function Add(){
             body:d//JSON.stringfy(datas)
         }).then(r=>r.json())
         .then(r=>{
-            console.log(r)
+            if(r>0){
+                
+            }
         })
 
 
@@ -75,7 +86,7 @@ export default function Add(){
 
     return (
         <>
-            <form onSubmit={add}>
+            <form onSubmit={add} >
             <div>
             <input type="text" name="userName" onChange={changeInput} ref={username} />
             </div>

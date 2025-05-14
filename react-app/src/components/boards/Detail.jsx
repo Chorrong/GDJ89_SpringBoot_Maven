@@ -1,7 +1,7 @@
 //디테일 페이지
 
 import { useEffect, useRef, useState } from "react";
-import { useLocation, useParams, useSearchParams } from "react-router-dom"
+import { Link, useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom"
 
 export default function Detail(){
     //  파라미터   : URL/파라미터값/파라미터값
@@ -31,6 +31,8 @@ export default function Detail(){
     const [num, setNum] = useState(p);
     const [result, setResult] = useState({})
 
+    const navigate = useNavigate();
+
     useEffect(()=>{
         fetch(`http://localhost:81/notices/${p.state.boardNum}`)
         .then(r=>r.json())
@@ -40,6 +42,16 @@ export default function Detail(){
 
 
     }, [])
+
+    function deleteHandler(){
+        fetch(`http://localhost:81/notices/${p.state.boardNum}`, {
+            method:"DELETE"
+        })
+        .then(r=>r.json())
+        .then(r=>{
+            navigate("/notice/list")
+        })
+    }
     
 
 
@@ -47,7 +59,10 @@ export default function Detail(){
         <>
         <h1>Detail</h1>
         <h3>{result.boardTitle}</h3>
-        
+        <h3>{result.boardContents}</h3>
+
+        <Link>Update</Link>
+        <button onClick={deleteHandler}>Delete</button>
         </>
     )
 }
