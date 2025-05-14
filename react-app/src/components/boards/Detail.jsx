@@ -25,7 +25,16 @@ export default function Detail(){
     // pathname : 현재 주소 경로
     // search : ?를 포함한 쿼리스트링
     // state  : 페이지 이동시 임의로 넣을 수 있는 상태 값
-    // key    : location 객체의 고유 값, 페이지가 변경 될 때 마다 고유의 값이 생성성
+    // key    : location 객체의 고유 값, 페이지가 변경 될 때 마다 고유의 값이 생성
+
+    //4. useNavigate(url, option)
+    // state  : 
+    // replace : boolean : 뒤로가기 방지(true),
+    // relative : route -> 절대경로, path->상대경로 , 기본값:route
+    // /notice/list
+    // navigate("detail", {relative:"route"})  =>  /notice/detail
+    // navigate("detail", {relative:"path"})  =>  /notice/list/detail
+
     const p = useLocation();
     console.log(p.state.boardNum)
     const [num, setNum] = useState(p);
@@ -61,7 +70,7 @@ export default function Detail(){
         <h3>{result.boardTitle}</h3>
         <h3>{result.boardContents}</h3>
 
-        <Link>Update</Link>
+        <Link to ="/notice/update" state={{boardNum:result.boardNum}}>Update</Link>
         <button onClick={deleteHandler}>Delete</button>
         </>
     )
