@@ -60,6 +60,11 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter{
 	protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException failed) throws IOException, ServletException {
 		// TODO Auto-generated method stub
+		response.setCharacterEncoding("UTF-8");
+		
+		//response.getWriter().print(failed.getMessage());
+		log.info("Fail : {}",failed.getMessage() );
+		response.sendError(500, "ID 없음");
 		
 	}
 

@@ -21,9 +21,22 @@ export default function SignIn(){
             method:"POST",
             body:params
 
-        }).then(r=>r.headers)
+        })
+        .then(r=> {
+            if(!r.ok){
+                console.log(r)
+                //console.log(r.text())
+                //throw new Error(r.json())
+                return r.json().then(Promise.reject.bind(Promise))
+            }
+
+            return r.headers
+
+        }
+            
+        )
         .then(r=>{
-     
+            console.log("success")
             //session 
             window.sessionStorage.setItem("AccessToken", r.get('AccessToken'))
 
@@ -33,6 +46,12 @@ export default function SignIn(){
             nav("/")
 
         })
+        .catch(e=>{
+            console.log(e)
+           
+            console.log(e.message)
+        })
+ 
 
     }
 
