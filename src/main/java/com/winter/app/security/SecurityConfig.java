@@ -113,6 +113,9 @@ public class SecurityConfig {
 		//추가 메서드 허용
 		corsConfiguration.setAllowedMethods(List.of("POST", "DELETE", "PATCH", "PUT", "GET"));
 		
+		corsConfiguration.setAllowedHeaders(List.of("Content-type"));
+		corsConfiguration.setExposedHeaders(List.of("AccessToken", "RefreshToken"));
+		
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", corsConfiguration);
 		return source;

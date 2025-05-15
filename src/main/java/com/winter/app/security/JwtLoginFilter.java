@@ -10,6 +10,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -46,8 +47,12 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter{
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication authResult) throws IOException, ServletException {
 		// Token 생성
-		String token = jwtTokenManager.createToken(authResult);
-		log.info("Token : {}", token);
+		String accesstoken = jwtTokenManager.createAccessToken(authResult);
+		String refreshToken = jwtTokenManager.createRefreshToken(authResult);
+		
+		response.setHeader("AccessToken", accesstoken);
+		response.setHeader("RefreshToken", refreshToken);
+		
 		
 	}
 	

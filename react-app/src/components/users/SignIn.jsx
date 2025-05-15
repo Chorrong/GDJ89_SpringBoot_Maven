@@ -2,10 +2,13 @@ import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function SignIn(){
     const username = useRef("")
     const password = useRef("")
+
+    const nav = useNavigate();
 
     function signInHandle(){
     
@@ -18,9 +21,17 @@ export default function SignIn(){
             method:"POST",
             body:params
 
-        }).then(r=>r.json())
+        }).then(r=>r.headers)
         .then(r=>{
-            console.log(r)
+     
+            //session 
+            window.sessionStorage.setItem("AccessToken", r.get('AccessToken'))
+
+            //local
+            window.localStorage.setItem('RefreshToken', r.get('RefreshToken'))
+
+            nav("/")
+
         })
 
     }
@@ -44,7 +55,7 @@ export default function SignIn(){
                 noValidate
                 autoComplete="off"
                 >
-               <TextField id="standard-basic" label="Standard" variant="standard" inputRef={password} />
+               <TextField id="standard-basic" type='password' label="Standard" variant="standard" inputRef={password} />
             </Box>
 
             <Button variant="outlined" onClick={signInHandle}>SIGN IN</Button>            
