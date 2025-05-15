@@ -13,6 +13,7 @@ import Stack from '@mui/material/Stack';
 import { Container } from '@mui/material';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -77,7 +78,9 @@ export default function List() {
 
 
     function pageClick(e){
-        console.log(e.target);
+        let p= e.target.innerText;
+        setPage(p)
+        setFlag(!flag)
     }
 
 
@@ -101,7 +104,7 @@ export default function List() {
               <StyledTableCell component="th" scope="row">
                 {row.boardNum}
               </StyledTableCell>
-              <StyledTableCell align="right">{row.boardTitle}</StyledTableCell>
+              <StyledTableCell align="right"><Link to={"/notice/detail"} state={{boardNum:row.boardNum}}> {row.boardTitle}</Link> </StyledTableCell>
               <StyledTableCell align="right">{row.userName}</StyledTableCell>
               <StyledTableCell align="right">{row.boardDate}</StyledTableCell>
               <StyledTableCell align="right">{row.boardHit}</StyledTableCell>

@@ -37,6 +37,8 @@ public class UserService implements UserDetailsService{
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		UserVO userVO = new UserVO();
 		userVO.setUsername(username);
+		
+		log.info("Login : {}", username);
 		try {
 			userVO = userDAO.detail(userVO);
 		} catch (Exception e) {

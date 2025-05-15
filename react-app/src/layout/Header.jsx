@@ -16,7 +16,7 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 
 const pages = ['Home', 'Products', 'Pricing', 'Blog', 'Notice'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Profile', 'Account', 'Dashboard', 'Logout', 'Join', 'Login'];
 
 function Header() {
   //--------------------
@@ -51,8 +51,17 @@ function Header() {
 
   };
 
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = (e) => {
     setAnchorElUser(null);
+    let url = e.target.innerText.toUpperCase();
+    if(url=='JOIN'){
+      navigate("/user/signup")
+    }
+
+    if(url==='LOGIN'){
+      navigate("/user/signin")
+    }
+
   };
 
   return (

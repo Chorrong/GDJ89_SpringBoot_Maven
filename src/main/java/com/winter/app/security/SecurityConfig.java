@@ -5,9 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -20,20 +22,17 @@ import com.winter.app.user.UserSocialService;
 @EnableWebSecurity//(debug = true)
 public class SecurityConfig {
 	
-	@Autowired
-	private SecurityLoginSuccessHandler loginSuccessHandler;
-	@Autowired
-	private SecurityLoginFailHandler loginFailHandler;
+
 	@Autowired
 	private UserService userService;
 	@Autowired
 	private UserSocialService userSocialService;
 	
 	@Autowired
-	private SecurityLogoutHandler securityLogoutHandler;
-	
+	private AuthenticationConfiguration authenticationConfiguration;
 	@Autowired
-	private SecurityLogoutSuccessHandler logoutSuccessHandler;
+	private JwtTokenManager jwtTokenManager;
+
 	
 	//정적자원들을 Security에서 제외
 	@Bean
@@ -73,55 +72,29 @@ public class SecurityConfig {
 					
 					/** Form 관련 설정**/
 					.formLogin(formlogin ->{
-						formlogin
-						.loginPage("/user/login")
-						//username, password
-						//.usernameParameter("id")
-						//.passwordParameter("pw")
-						//.defaultSuccessUrl("/")
-						.successHandler(loginSuccessHandler)
-						//.failureUrl("/user/login")
-						.failureHandler(loginFailHandler)
-						.permitAll()
+						formlogin.disable()
+	
 						;
 					})
-					/** Logout 관련 설정 **/
-					.logout(logout->{
-						logout
-						.logoutUrl("/user/logout")
-						//.logoutSuccessUrl("/")
-						.addLogoutHandler(securityLogoutHandler)
-						//.logoutSuccessHandler(logoutSuccessHandler)
-						.invalidateHttpSession(true)
-						.permitAll()
-						;
-					})
-					.rememberMe(rememberme->{
-						rememberme
-						.rememberMeParameter("remember-me")
-						.tokenValiditySeconds(60)
-						.key("rememberkey")
-						.userDetailsService(userService)
-						.authenticationSuccessHandler(loginSuccessHandler)
-						.useSecureCookie(false);
-					})
+					
 					.sessionManagement(s->{
-						s
-						.sessionFixation().newSession()//.changeSessionId()
+						s.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 						
-						.invalidSessionUrl("/")
-						.maximumSessions(1)
-						.expiredUrl("/user/login")
-						.maxSessionsPreventsLogin(false)
 						;
 						
 					})
+					.httpBasic(httpBasic-> httpBasic.disable())
+					
+					
+					
 					.oauth2Login(oauth2Login->{
 						oauth2Login
 						.userInfoEndpoint(use->{
 							use.userService(userSocialService);
 						});
 					})
+					
+					.addFilter(new JwtLoginFilter(authenticationConfiguration.getAuthenticationManager(), jwtTokenManager))
 					
 					
 					;

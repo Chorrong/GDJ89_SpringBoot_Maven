@@ -50,8 +50,6 @@ public class UserController {
 	@PostMapping("update")
 	public void update(@Validated(UpdateGroup.class) UserVO userVO, BindingResult bindingResult)throws Exception{}
 	
-	@GetMapping("join")
-	public void join(@ModelAttribute UserVO userVO)throws Exception{}
 	
 	@PostMapping("join")
 	public String join(@Validated(JoinGroup.class) UserVO userVO,BindingResult bindingResult,  @RequestParam("avatar") MultipartFile avatar)throws Exception{
