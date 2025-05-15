@@ -5,6 +5,7 @@ import Qna from "../components/boards/Qna";
 import Detail from "../components/boards/Detail";
 import Add from "../components/boards/Add";
 import Update from "../components/boards/Update";
+import List from "../components/boards/List";
 
 export default function AppRouter(){
 
@@ -12,7 +13,7 @@ export default function AppRouter(){
         <Routes>
             <Route path="/" element={<Home />}></Route>
             <Route path="/notice/">
-                <Route path="list" element={<Notice />}></Route>
+                <Route path="list" element={<List />}></Route>
                 <Route path="detail" element={<Detail />}></Route>
                 <Route path="add" element={<Add />}></Route>
                 <Route path="update" element={<Update />}></Route>
