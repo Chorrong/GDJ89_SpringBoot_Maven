@@ -4,6 +4,8 @@ import viteLogo from '/vite.svg'
 import { BrowserRouter } from 'react-router-dom'
 import Header from './layout/Header'
 import AppRouter from './layout/AppRouter'
+import { Base_URL } from './contexts/UrlContext'
+import { LoginStateProvider } from './contexts/LoginStateContext'
 
 
 function App() {
@@ -12,10 +14,13 @@ function App() {
   return (
     <>
      <BrowserRouter>
-      <Header></Header>
-      
-      <AppRouter></AppRouter>
-      
+      <Base_URL.Provider value="http://localhost:81">
+        <LoginStateProvider>
+          <Header></Header>
+          
+          <AppRouter></AppRouter>
+        </LoginStateProvider>
+      </Base_URL.Provider>
      </BrowserRouter>
     </>
   )

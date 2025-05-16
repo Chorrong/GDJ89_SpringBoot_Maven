@@ -15,6 +15,10 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
+import {setHeaders, getHeaders} from '../../commons/UserManger';
+import { useContext } from 'react';
+import { Base_URL } from '../../contexts/UrlContext';
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -49,6 +53,9 @@ const rows = [
 
 export default function List() {
 
+    //context
+    const base_url = useContext(Base_URL)
+
     //글목록, Pager
      const [list, setList] = useState({pager:"", ar:[]});
 
@@ -68,8 +75,19 @@ export default function List() {
         params.append('page', page)
         params.append('search', search2)
 
-        fetch(`http://localhost:81/notices?${params}`)
-        .then(r=>r.json())
+        let accessToken = window.sessionStorage.getItem("AccessToken")
+        let refreshToken = window.localStorage.getItem("RefreshToken")
+
+
+        fetch(`${base_url}/notices?${params}`, {
+          headers: setHeaders()
+        })
+        .then(r=> {
+            
+          getHeaders(r)
+
+          return  r.json()
+        })
         .then(r=>{
             
             setList(r)

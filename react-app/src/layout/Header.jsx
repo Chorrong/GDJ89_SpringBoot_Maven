@@ -14,13 +14,19 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import { useLoginStateContext } from "../contexts/LoginStateContext";
 
-const pages = ['Home', 'Products', 'Pricing', 'Blog', 'Notice'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout', 'Join', 'Login'];
 
 function Header() {
+  const pages = ['Home', 'Products', 'Pricing', 'Blog', 'Notice'];
+  let settings = ['Login', 'Logout'];
   //--------------------
     const navigate = useNavigate();
+    const loginState = useLoginStateContext();
+
+    if(loginState.isLogin){
+      settings=['Profile', 'Account', 'Dashboard', 'Logout']
+    }
 
   //--------------------
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -60,6 +66,13 @@ function Header() {
 
     if(url==='LOGIN'){
       navigate("/user/signin")
+    }
+
+    if(url==='LOGOUT'){
+      loginState.setLogout()
+      sessionStorage.removeItem("AccessToken")
+      localStorage.removeItem("RefreshToken")
+      navigate("/")
     }
 
   };

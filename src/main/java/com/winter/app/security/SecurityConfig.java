@@ -62,6 +62,7 @@ public class SecurityConfig {
 					/** 권한 적용 **/
 					.authorizeHttpRequests(authorizeRequest->{
 						authorizeRequest
+						.requestMatchers("/notices").authenticated()
 						//.requestMatchers("/notice/add", "/notice/update", "/notice/delete").hasRole("ADMIN")
 						//.requestMatchers("/user/mypage","/user/update", "/user/logout").authenticated()
 						//.requestMatchers("/manager/**").hasAnyRole("ADMIN", "MANAGER")
@@ -87,13 +88,14 @@ public class SecurityConfig {
 					
 					
 					
-					.oauth2Login(oauth2Login->{
-						oauth2Login
-						.userInfoEndpoint(use->{
-							use.userService(userSocialService);
-						});
-					})
-					
+//					.oauth2Login(oauth2Login->{
+//						oauth2Login
+//						.userInfoEndpoint(use->{
+//							use.userService(userSocialService);
+//						});
+//					})
+//					
+					.addFilter(new JwtAuthenticationFilter(authenticationConfiguration.getAuthenticationManager(), jwtTokenManager))
 					.addFilter(new JwtLoginFilter(authenticationConfiguration.getAuthenticationManager(), jwtTokenManager))
 					
 					
@@ -108,12 +110,14 @@ public class SecurityConfig {
 		CorsConfiguration corsConfiguration = new CorsConfiguration();
 		
 		//GET메서드 허용
-		corsConfiguration.setAllowedOrigins(List.of("*"));
+		//corsConfiguration.setAllowedOriginPatterns(List.of("http://localhost:5173"));
 		
+		corsConfiguration.setAllowedOrigins(List.of("*"));
+		//corsConfiguration.setAllowCredentials(true);
 		//추가 메서드 허용
 		corsConfiguration.setAllowedMethods(List.of("POST", "DELETE", "PATCH", "PUT", "GET"));
 		
-		corsConfiguration.setAllowedHeaders(List.of("Content-type"));
+		corsConfiguration.setAllowedHeaders(List.of("*"));
 		corsConfiguration.setExposedHeaders(List.of("AccessToken", "RefreshToken"));
 		
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

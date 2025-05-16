@@ -5,10 +5,16 @@ import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import com.winter.app.user.UserService;
+
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
@@ -29,6 +35,9 @@ public class JwtTokenManager {
 	private String jwtSecretKey;
 	
 	private Key key;
+	
+	@Autowired
+	private UserService userService;
 	//1. Token 생성
 	@PostConstruct
 	public void init() {
@@ -55,5 +64,23 @@ public class JwtTokenManager {
 				.signWith(key)
 				.compact();
 	}
+	
+	public Claims tokenValidation(String token) throws Exception{
+		return Jwts.parser()
+					.setSigningKey(this.key)
+					.build()
+					.parseClaimsJws(token)
+					.getBody();
+		
+		
+	}
+	
+	public Authentication getAuthenticationByToken(String username) {
+		UserDetails userDetails = userService.loadUserByUsername(username);
+		
+		return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+	}
+	
+	
 
 }
