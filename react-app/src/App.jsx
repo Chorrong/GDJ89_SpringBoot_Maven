@@ -6,6 +6,7 @@ import Header from './layout/Header'
 import AppRouter from './layout/AppRouter'
 import { Base_URL } from './contexts/UrlContext'
 import { LoginStateProvider } from './contexts/LoginStateContext'
+import Footer from './layout/Footer'
 
 
 function App() {
@@ -16,9 +17,13 @@ function App() {
      <BrowserRouter>
       <Base_URL.Provider value="http://localhost:81">
         <LoginStateProvider>
+          
           <Header></Header>
           
           <AppRouter></AppRouter>
+
+          <Footer></Footer>
+
         </LoginStateProvider>
       </Base_URL.Provider>
      </BrowserRouter>

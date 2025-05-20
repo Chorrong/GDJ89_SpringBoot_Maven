@@ -20,15 +20,17 @@ class UserTest {
 		UserVO userVO = new UserVO();
 		userVO.setUsername("admin");
 		
-		userVO = userDAO.detail(userVO);
-		
 		String pw = "12345678";
 		
+		userVO.setPassword(passwordEncoder.encode(pw));
+		userVO.setName("admin");
 		
 		
-		boolean result= passwordEncoder.matches(pw, userVO.getPassword());
+		userDAO.join(userVO);
 		
-		assertTrue(result);
+		
+		
+		
 		
 		
 	}

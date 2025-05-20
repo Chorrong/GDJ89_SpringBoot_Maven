@@ -40,10 +40,10 @@
   		<result column="FILE_NAME" property="fileName"/>
   		<result column="ORI_NAME" property="oriName"/>
 
-		<result column="AccountNonExpired" property="accountNonExpired"/>
-		<result column="AccountNonLocked" property="accountNonLocked"/>
-		<result column="CredentialsNonExpired" property="credentialsNonExpired"/>
-		<result column="Enabled" property="enabled"/>
+		<result column="ACCOUNTNONEXPIRED" property="accountNonExpired"/>
+		<result column="ACCOUNTNONLOCKED" property="accountNonLocked"/>
+		<result column="CREDENTIALSNONEXPIRED" property="credentialsNonExpired"/>
+		<result column="ENABLED" property="enabled"/>
   		<collection property="list" javaType="java.util.List" ofType="RoleVO">
   			<result column="ROLE_NAME" property="roleName"/>
   		</collection>
