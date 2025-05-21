@@ -17,6 +17,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
 		// TODO Auto-generated method stub
 		registry.addHandler(chatHandler, "/ws/chat")
 		.setAllowedOriginPatterns("http://localhost:5173", "http://localhost:5173/ws/chat")
+		
 		.withSockJS()
 		;
 		

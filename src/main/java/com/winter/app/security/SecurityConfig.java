@@ -110,15 +110,15 @@ public class SecurityConfig {
 		CorsConfiguration corsConfiguration = new CorsConfiguration();
 		
 		//GET메서드 허용
-		//corsConfiguration.setAllowedOriginPatterns(List.of("http://localhost:5173"));
+		corsConfiguration.setAllowedOriginPatterns(List.of("http://localhost:5173", "http://localhost:5173/ws/chat"));
 		
-		corsConfiguration.setAllowedOrigins(List.of("*"));
+		//corsConfiguration.setAllowedOrigins(List.of("*"));
 		//corsConfiguration.setAllowCredentials(true);
 		//추가 메서드 허용
 		corsConfiguration.setAllowedMethods(List.of("POST", "DELETE", "PATCH", "PUT", "GET"));
 		
 		corsConfiguration.setAllowedHeaders(List.of("*"));
-		corsConfiguration.setExposedHeaders(List.of("AccessToken", "RefreshToken"));
+		corsConfiguration.setExposedHeaders(List.of("Authorization", "AccessToken", "RefreshToken"));
 		
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", corsConfiguration);

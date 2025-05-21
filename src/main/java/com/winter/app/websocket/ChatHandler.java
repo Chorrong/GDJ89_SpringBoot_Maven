@@ -18,16 +18,16 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ChatHandler implements WebSocketHandler {
 	
-	private List<WebSocketSession> list = new ArrayList<>();
+	
 	private Map<String, WebSocketSession> map = new HashMap<>();
 	
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		// TODO Auto-generated method stub
 		log.info("WebSocket 연결 확인");
-		list.add(session);
-		session.getId();
-		log.info("ID : {}", session.getPrincipal().getName());
+		
+		map.put(session.getPrincipal().getName(), session);
+		log.info("ID : {}", session.getPrincipal());
 		
 	}
 

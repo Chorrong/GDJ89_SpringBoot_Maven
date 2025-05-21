@@ -33,6 +33,9 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 		log.info("토큰 검증");
 		
 		String token= request.getHeader("Authorization");
+		if(token==null) {
+			token = request.getParameter("t");
+		}
 		
 		if(token != null && token.startsWith("Bearer ")) {
 			token = token.substring(token.indexOf(" ")+1); 
